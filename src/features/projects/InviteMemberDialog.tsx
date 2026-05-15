@@ -61,6 +61,13 @@ const InviteMemberDialog = ({
                 ],
             });
 
+            queryClient.invalidateQueries({
+                queryKey: [
+                    "activities",
+                    projectId,
+                ],
+            });
+
             toast.success(
                 "Member added"
             );

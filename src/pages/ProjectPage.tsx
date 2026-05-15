@@ -1,8 +1,8 @@
 import { getProjectTasks } from "@/api/tasks";
 
 import CreateTaskDialog from "@/features/tasks/CreateTaskDialog";
-import TaskCard from "@/features/tasks/TaskCard";
 import InviteMemberDialog from "@/features/projects/InviteMemberDialog";
+import ActivityTimeline from "@/features/activity/ActivityTimeline";
 
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
@@ -105,39 +105,46 @@ const ProjectPage = () => {
                     </div>
                 </div>
 
-                <div className="mt-12">
-                    <div className="flex items-center justify-between mb-6">
-                        <div>
-                            <h2 className="text-2xl font-semibold">
-                                Tasks
-                            </h2>
+                <div className="grid gap-6 lg:grid-cols-[1fr_350px] mt-12">
+                    <div>
+                        <div className="flex items-center justify-between mb-6">
+                            <div>
+                                <h2 className="text-2xl font-semibold">
+                                    Tasks
+                                </h2>
 
-                            <p className="text-muted-foreground mt-1">
-                                Project task management
-                            </p>
+                                <p className="text-muted-foreground mt-1">
+                                    Project task management
+                                </p>
+                            </div>
+
+                            <CreateTaskDialog
+                                projectId={id!}
+                            />
                         </div>
 
-                        <CreateTaskDialog
+                        {!tasksQuery.data?.length ? (
+                            <div className="border border-dashed rounded-xl p-12 text-center">
+                                <h3 className="font-semibold">
+                                    No tasks yet
+                                </h3>
+
+                                <p className="text-muted-foreground mt-2">
+                                    Create your first task
+                                </p>
+                            </div>
+                        ) : (
+                            <KanbanBoard
+                                tasks={tasksQuery.data}
+                                projectId={id!}
+                            />
+                        )}
+                    </div>
+                    <div className="mt-12">
+                        <ActivityTimeline
                             projectId={id!}
                         />
                     </div>
-
-                    {!tasksQuery.data?.length ? (
-                        <div className="border border-dashed rounded-xl p-12 text-center">
-                            <h3 className="font-semibold">
-                                No tasks yet
-                            </h3>
-
-                            <p className="text-muted-foreground mt-2">
-                                Create your first task
-                            </p>
-                        </div>
-                    ) : (
-                        <KanbanBoard
-                            tasks={tasksQuery.data}
-                            projectId={id!}
-                        />
-                    )}
                 </div>
             </div>
         </div>

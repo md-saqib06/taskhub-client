@@ -138,17 +138,8 @@ const KanbanBoard = ({
                 status
             ),
 
-        onError: (
-            _error,
-            _variables,
-            context
-        ) => {
-            queryClient.setQueryData(
-                ["tasks", projectId],
-                context?.previousTasks
-            );
-
-            setActiveTask(null);
+        onError: () => {
+            setActiveTask(undefined);
 
             toast.error(
                 "Failed to update task"
@@ -161,6 +152,13 @@ const KanbanBoard = ({
             queryClient.invalidateQueries({
                 queryKey: [
                     "tasks",
+                    projectId,
+                ],
+            });
+
+            queryClient.invalidateQueries({
+                queryKey: [
+                    "activities",
                     projectId,
                 ],
             });

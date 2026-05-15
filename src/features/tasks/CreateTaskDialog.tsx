@@ -96,6 +96,13 @@ const CreateTaskDialog = ({
                 ],
             });
 
+            queryClient.invalidateQueries({
+                queryKey: [
+                    "activities",
+                    projectId,
+                ],
+            });
+
             toast.success(
                 "Task created"
             );
