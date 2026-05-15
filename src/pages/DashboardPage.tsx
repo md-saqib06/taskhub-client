@@ -3,6 +3,7 @@ import { getProjects } from "@/api/projects";
 
 import CreateProjectDialog from "@/features/projects/CreateProjectDialog";
 import ProjectCard from "@/features/projects/ProjectCard";
+import Navbar from "@/components/Navbar";
 
 interface Project {
     id: string;
@@ -19,6 +20,7 @@ const DashboardPage = () => {
 
     return (
         <div className="min-h-screen bg-background text-foreground">
+            <Navbar />
             <div className="max-w-7xl mx-auto p-6">
                 <div className="flex items-center justify-between mb-10">
                     <div>

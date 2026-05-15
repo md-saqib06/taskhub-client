@@ -12,6 +12,7 @@ import {
     getProjectMembers,
 } from "@/api/projects";
 import KanbanBoard from "@/features/tasks/KanbanBoard";
+import Navbar from "@/components/Navbar";
 
 const ProjectPage = () => {
     const { id } = useParams();
@@ -38,7 +39,9 @@ const ProjectPage = () => {
     ) {
         return (
             <div className="min-h-screen flex items-center justify-center">
-                Loading project...
+                <p className="text-muted-foreground">
+                    Loading project...
+                </p>
             </div>
         );
     }
@@ -51,6 +54,7 @@ const ProjectPage = () => {
 
     return (
         <div className="min-h-screen bg-background text-foreground">
+            <Navbar />
             <div className="max-w-7xl mx-auto p-6">
                 <div className="flex items-start justify-between gap-4 mb-10">
                     <div>

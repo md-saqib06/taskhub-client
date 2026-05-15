@@ -7,6 +7,7 @@ export const useAuth = () => {
         queryKey: ["me"],
         queryFn: getCurrentUser,
         retry: false,
+        staleTime: 0,
     });
 
     return {
