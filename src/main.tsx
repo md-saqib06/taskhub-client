@@ -6,6 +6,8 @@ import { QueryProvider } from "./providers/QueryProvider";
 
 import "./index.css";
 
+document.documentElement.classList.add("dark");
+
 ReactDOM.createRoot(
   document.getElementById("root")!
 ).render(
