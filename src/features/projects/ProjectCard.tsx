@@ -5,16 +5,21 @@ import {
     CardTitle,
     CardDescription,
 } from "@/components/ui/card";
-
 import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
 
 const ProjectCard = ({
     project,
 }: {
-    project: { name: string, description: string, role: string }
+    project: { id: string, name: string, description: string, role: string }
 }) => {
+    const navigate = useNavigate();
+
     return (
-        <Card className="hover:border-primary/40 transition-colors cursor-pointer">
+        <Card
+            onClick={() => navigate(`/projects/${project.id}`)}
+            className="hover:border-primary/40 transition-colors cursor-pointer"
+        >
             <CardHeader>
                 <div className="flex items-start justify-between gap-4">
                     <div>

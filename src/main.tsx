@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 import { router } from "./routes/Index";
 import { QueryProvider } from "./providers/QueryProvider";
-
+import { Toaster } from "@/components/ui/sonner";
 import "./index.css";
 
 document.documentElement.classList.add("dark");
@@ -14,6 +14,7 @@ ReactDOM.createRoot(
   <React.StrictMode>
     <QueryProvider>
       <RouterProvider router={router} />
+      <Toaster richColors />
     </QueryProvider>
   </React.StrictMode>
 );

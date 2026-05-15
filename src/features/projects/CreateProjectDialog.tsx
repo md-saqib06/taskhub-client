@@ -19,10 +19,13 @@ import {
     type CreateProjectInput,
 } from "./validation";
 import { createProject } from "@/api/projects";
+import { useState } from "react";
 
 
 const CreateProjectDialog = () => {
     const queryClient = useQueryClient();
+
+    const [open, setOpen] = useState(false);
 
     const {
         register,
@@ -47,6 +50,7 @@ const CreateProjectDialog = () => {
             );
 
             reset();
+            setOpen(false);
         },
 
         onError: () => {
@@ -63,7 +67,10 @@ const CreateProjectDialog = () => {
     };
 
     return (
-        <Dialog>
+        <Dialog
+            open={open}
+            onOpenChange={setOpen}
+        >
             <DialogTrigger asChild>
                 <Button className="cursor-pointer">
                     Create Project

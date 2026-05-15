@@ -45,3 +45,23 @@ export const addProjectMember = async (
 
     return response.data;
 };
+
+export const getProject = async (
+    projectId: string
+) => {
+    const response = await api.get(
+        `/projects/${projectId}`
+    );
+
+    return response.data;
+};
+
+export const getProjectMembers = async (
+    projectId: string
+) => {
+    const response = await api.get(
+        `/projects/${projectId}/members`
+    );
+
+    return response.data;
+};
