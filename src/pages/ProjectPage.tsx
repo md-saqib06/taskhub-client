@@ -1,3 +1,7 @@
+import { getProjectTasks } from "@/api/tasks";
+
+import CreateTaskDialog from "@/features/tasks/CreateTaskDialog";
+import TaskCard from "@/features/tasks/TaskCard";
 import InviteMemberDialog from "@/features/projects/InviteMemberDialog";
 
 import { useParams } from "react-router-dom";
@@ -18,13 +22,18 @@ const ProjectPage = () => {
 
     const membersQuery = useQuery({
         queryKey: ["members", id],
-        queryFn: () =>
-            getProjectMembers(id!),
+        queryFn: () => getProjectMembers(id!),
+    });
+
+    const tasksQuery = useQuery({
+        queryKey: ["tasks", id],
+        queryFn: () => getProjectTasks(id!),
     });
 
     if (
         projectQuery.isLoading ||
-        membersQuery.isLoading
+        membersQuery.isLoading ||
+        tasksQuery.isLoading
     ) {
         return (
             <div className="min-h-screen flex items-center justify-center">
@@ -65,7 +74,13 @@ const ProjectPage = () => {
 
                     <div className="flex flex-wrap gap-4">
                         {members.map(
-                            (member: { id: string; user: { name: string; username: string } }) => (
+                            (member: {
+                                id: string;
+                                user: {
+                                    name: string;
+                                    username: string
+                                }
+                            }) => (
                                 <div
                                     key={member.id}
                                     className="border rounded-lg p-4"
@@ -87,6 +102,57 @@ const ProjectPage = () => {
                             )
                         )}
                     </div>
+                </div>
+
+                <div className="mt-12">
+                    <div className="flex items-center justify-between mb-6">
+                        <div>
+                            <h2 className="text-2xl font-semibold">
+                                Tasks
+                            </h2>
+
+                            <p className="text-muted-foreground mt-1">
+                                Project task management
+                            </p>
+                        </div>
+
+                        <CreateTaskDialog
+                            projectId={id!}
+                        />
+                    </div>
+
+                    {!tasksQuery.data?.length ? (
+                        <div className="border border-dashed rounded-xl p-12 text-center">
+                            <h3 className="font-semibold">
+                                No tasks yet
+                            </h3>
+
+                            <p className="text-muted-foreground mt-2">
+                                Create your first task
+                            </p>
+                        </div>
+                    ) : (
+                        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                            {tasksQuery.data.map(
+                                (task: {
+                                    id: string;
+                                    title: string;
+                                    description?: string;
+                                    priority: string;
+                                    dueDate?: string;
+                                    assignedUser?: {
+                                        name: string;
+                                        avatarUrl?: string;
+                                    };
+                                }) => (
+                                    <TaskCard
+                                        key={task.id}
+                                        task={task}
+                                    />
+                                )
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>
