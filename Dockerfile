@@ -1,36 +1,29 @@
-# ─── Stage 1: Build ───────────────────────────────────────────────────────────
-FROM oven/bun:1 AS builder
+FROM oven/bun:alpine AS builder
 
 WORKDIR /app
 
-# Install dependencies first (layer cache)
 COPY package.json bun.lock ./
+
 RUN bun install --frozen-lockfile
 
-# Copy all source files
+# Copy all source code
 COPY . .
 
-# Build the Vite app → dist/
 RUN bun run build
 
-# ─── Stage 2: Production (Nginx) ──────────────────────────────────────────────
-FROM nginx:stable-alpine AS runner
+# Production stage
+FROM oven/bun:alpine AS final
 
-# Create non-root user for security
-RUN addgroup -S appgroup && adduser -S -G appgroup appuser
+WORKDIR /app
 
-# Remove default Nginx static content
-RUN rm -rf /usr/share/nginx/html/*
+COPY --from=builder /app/dist ./dist
 
-# Copy built assets from builder
-COPY --from=builder /app/dist /usr/share/nginx/html
+RUN addgroup -S appgroup && adduser -S -G appgroup -h /home/appuser appuser
 
-# Copy Nginx config (SPA fallback + gzip + asset caching)
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+RUN chown -R appuser:appgroup /app
 
-# Give ownership of static files to non-root user
-RUN chown -R appuser:appgroup /usr/share/nginx/html
+USER appuser
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["bun", "x", "serve", "-s", "dist", "-l", "80"]
