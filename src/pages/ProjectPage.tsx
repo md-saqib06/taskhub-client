@@ -11,6 +11,7 @@ import {
     getProject,
     getProjectMembers,
 } from "@/api/projects";
+import KanbanBoard from "@/features/tasks/KanbanBoard";
 
 const ProjectPage = () => {
     const { id } = useParams();
@@ -132,26 +133,10 @@ const ProjectPage = () => {
                             </p>
                         </div>
                     ) : (
-                        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                            {tasksQuery.data.map(
-                                (task: {
-                                    id: string;
-                                    title: string;
-                                    description?: string;
-                                    priority: string;
-                                    dueDate?: string;
-                                    assignedUser?: {
-                                        name: string;
-                                        avatarUrl?: string;
-                                    };
-                                }) => (
-                                    <TaskCard
-                                        key={task.id}
-                                        task={task}
-                                    />
-                                )
-                            )}
-                        </div>
+                        <KanbanBoard
+                            tasks={tasksQuery.data}
+                            projectId={id!}
+                        />
                     )}
                 </div>
             </div>

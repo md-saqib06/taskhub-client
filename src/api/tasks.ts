@@ -27,3 +27,20 @@ export const createTask = async (
 
     return response.data;
 };
+
+export const updateTaskStatus = async (
+    taskId: string,
+    status:
+        | "TODO"
+        | "IN_PROGRESS"
+        | "DONE"
+) => {
+    const response = await api.patch(
+        `/tasks/${taskId}/status`,
+        {
+            status,
+        }
+    );
+
+    return response.data;
+};

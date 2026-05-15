@@ -2,14 +2,17 @@ import {
     Card,
     CardContent,
 } from "@/components/ui/card";
-
 import { Badge } from "@/components/ui/badge";
-
 import {
     Avatar,
     AvatarFallback,
     AvatarImage,
 } from "@/components/ui/avatar";
+
+import {
+    useSortable,
+} from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 const priorityColorMap = {
     LOW: "secondary",
@@ -21,6 +24,7 @@ const TaskCard = ({
     task,
 }: {
     task: {
+        id: string;
         title: string;
         description?: string;
         priority: string;
@@ -31,8 +35,37 @@ const TaskCard = ({
         dueDate?: string;
     };
 }) => {
+    const {
+        attributes,
+        listeners,
+        setNodeRef,
+        transform,
+        transition,
+        isDragging,
+    } = useSortable({
+        id: task.id,
+        // animateLayoutChanges: () => true,
+    });
+
+    const style = {
+        transform:
+            CSS.Transform.toString(
+                transform
+            ),
+
+        transition,
+
+        opacity: isDragging ? 0.3 : 1,
+    };
+
     return (
-        <Card>
+        <Card
+            ref={setNodeRef}
+            style={style}
+            {...listeners}
+            {...attributes}
+            className="cursor-grab active:cursor-grabbing transition-shadow hover:shadow-md"
+        >
             <CardContent className="p-4 space-y-4">
                 <div className="flex items-start justify-between gap-4">
                     <h3 className="font-semibold">
