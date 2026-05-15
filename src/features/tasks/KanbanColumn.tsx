@@ -23,6 +23,7 @@ const KanbanColumn = ({
             avatarUrl?: string;
         };
         dueDate?: string;
+        projectId: string;
     }[];
     isActive: boolean;
 }) => {

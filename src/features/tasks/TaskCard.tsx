@@ -48,7 +48,6 @@ const TaskCard = ({
         isDragging,
     } = useSortable({
         id: task.id,
-        // animateLayoutChanges: () => true,
     });
 
     const style = {

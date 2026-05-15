@@ -53,6 +53,7 @@ const KanbanBoard = ({
             avatarUrl?: string;
         };
         dueDate?: string;
+        projectId: string;
     }[];
     projectId: string;
 }) => {
@@ -69,6 +70,7 @@ const KanbanBoard = ({
             avatarUrl?: string;
         };
         dueDate?: string;
+        projectId: string;
     }>();
     const [activeColumn, setActiveColumn] = useState<string | null>(null);
     const [boardTasks, setBoardTasks] = useState(tasks);
@@ -147,7 +149,7 @@ const KanbanBoard = ({
         },
 
         onSettled: () => {
-            setActiveTask(null);
+            setActiveTask(undefined);
 
             queryClient.invalidateQueries({
                 queryKey: [
